@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三重重工業 社内Web資料ポータル ｜ GitHub Pages 公開一覧</title>
+<style>
+  :root{
+    --navy:#13315c; --blue:#2769b3; --teal:#0d9488; --green:#16a34a;
+    --orange:#ea7317; --purple:#7c3aed; --warn:#c0392b;
+    --bg:#eef3f8; --card:#fff; --line:#dbe3ec; --txt:#1f2733; --muted:#6b7787;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{
+    font-family:"Yu Gothic","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    background:var(--bg);color:var(--txt);line-height:1.7;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 16px 60px;}
+  header{
+    background:linear-gradient(120deg,#13315c,#2769b3 55%,#0d9488);
+    color:#fff;padding:38px 22px 34px;text-align:center;
+  }
+  header .tag{
+    display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.5);
+    border-radius:30px;padding:4px 16px;font-size:13px;font-weight:bold;margin-bottom:14px;
+  }
+  header h1{font-size:26px;line-height:1.4;}
+  header p{margin-top:8px;font-size:14px;opacity:.92;}
+  .note{
+    background:#fff7e6;border:1px solid #f0d9a0;border-left:5px solid var(--orange);
+    border-radius:8px;padding:14px 16px;margin:22px 0 4px;font-size:13.5px;color:#5a4a20;
+  }
+  .cat{margin-top:34px;}
+  .cat-h{
+    display:flex;align-items:center;gap:10px;font-size:20px;font-weight:bold;
+    color:var(--navy);padding-bottom:8px;border-bottom:3px solid var(--c,var(--blue));margin-bottom:4px;
+  }
+  .cat-h .ic{font-size:24px;}
+  .cat-h .sub{font-size:12px;font-weight:normal;color:var(--muted);margin-left:auto;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:14px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-top:4px solid var(--c,var(--blue));
+    border-radius:12px;padding:16px 16px 14px;display:flex;flex-direction:column;
+    box-shadow:0 2px 6px rgba(19,49,92,.05);
+  }
+  .card .h{display:flex;align-items:flex-start;gap:10px;}
+  .card .emo{font-size:26px;line-height:1;flex:none;}
+  .card h3{font-size:16px;color:var(--navy);line-height:1.35;}
+  .card .desc{font-size:13px;color:#4a5563;margin:8px 0 10px;flex:1;}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+  .b{font-size:11px;font-weight:bold;padding:2px 9px;border-radius:20px;color:#fff;}
+  .b-use{background:var(--green);} .b-in{background:var(--blue);} .b-cust{background:var(--teal);}
+  .b-sec{background:var(--warn);} .b-pdf{background:#b0392b;}
+  .card a.open{
+    display:block;text-align:center;text-decoration:none;background:var(--c,var(--blue));color:#fff;
+    font-weight:bold;font-size:14px;padding:10px;border-radius:8px;
+  }
+  .card a.open:active{opacity:.85;}
+  .url{font-size:11px;color:var(--muted);word-break:break-all;margin-top:8px;
+    background:#f4f7fa;border:1px dashed var(--line);border-radius:6px;padding:6px 8px;}
+  footer{text-align:center;font-size:12px;color:var(--muted);margin-top:40px;padding-top:16px;border-top:1px solid var(--line);}
+  @media(max-width:520px){header h1{font-size:21px;}.cards{grid-template-columns:1fr;}}
+
+  #gate{
+    position:fixed;inset:0;z-index:999;background:linear-gradient(120deg,#13315c,#2769b3 55%,#0d9488);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  #gate .box{
+    background:#fff;border-radius:14px;padding:32px 26px;max-width:340px;width:100%;
+    box-shadow:0 8px 28px rgba(0,0,0,.25);text-align:center;
+  }
+  #gate .box .ic{font-size:34px;margin-bottom:6px;}
+  #gate .box h2{font-size:17px;color:var(--navy);margin-bottom:6px;}
+  #gate .box p{font-size:12.5px;color:var(--muted);margin-bottom:16px;}
+  #gate input{
+    width:100%;padding:11px 12px;font-size:15px;border:1px solid var(--line);border-radius:8px;
+    margin-bottom:10px;box-sizing:border-box;
+  }
+  #gate button{
+    width:100%;padding:11px;font-size:15px;font-weight:bold;color:#fff;background:var(--blue);
+    border:none;border-radius:8px;cursor:pointer;
+  }
+  #gate .err{color:var(--warn);font-size:12.5px;margin-top:8px;display:none;}
+  #main-content{display:none;}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <div class="ic">🔒</div>
+    <h2>社内限定ページです</h2>
+    <p>三重重工業 社内で共有されたパスワードを入力してください。</p>
+    <input type="password" id="gate-pw" placeholder="パスワード" autocomplete="off">
+    <button onclick="checkGatePw()">開く</button>
+    <div class="err" id="gate-err">パスワードが違います。</div>
+  </div>
+</div>
+
+<div id="main-content">
+<header>
+  <span class="tag">📂 社内Web資料ポータル</span>
+  <h1>GitHub Pages 公開資料 一覧</h1>
+  <p>三重重工業 ／ スマホ・LINEで開ける社内資料まとめ</p>
+</header>
+
+<div class="wrap">
+
+  <div class="note">
+    ⚠️ ここに並ぶ資料は <b>URLを知れば社外の人でも閲覧できます</b>（検索に載る可能性もあり）。競合比較・営業ノウハウを含むものは <b>社内LINEグループ限定</b>で共有してください。「🔒社外秘」バッジ付きは特に取り扱い注意です。
+  </div>
+
+  <!-- ===== 止水板 ===== -->
+  <section class="cat" style="--c:var(--blue)">
+    <div class="cat-h" style="--c:var(--blue)"><span class="ic">🌊</span>止水板（防水板）<span class="sub">水門プラント部 ／ 大奉金属OEM</span></div>
+    <div class="cards">
+
+      <div class="card" style="--c:var(--purple)">
+        <div class="h"><span class="emo">📱</span><h3>キャッチー版</h3></div>
+        <p class="desc">パッと目を引く入口ページ。お客様・グループLINEに貼る用。ここから本資料・補助金・各製品ページへ飛べます。</p>
+        <div class="badges"><span class="b b-cust">共有用</span><span class="b b-use">お客様OK</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/shisui/catch.html" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/shisui/catch.html</div>
+      </div>
+
+      <div class="card" style="--c:var(--blue)">
+        <div class="h"><span class="emo">📘</span><h3>営業ハンドブック（本資料）</h3></div>
+        <p class="desc">競合比較表・全製品ラインナップ・JIS基準・想定Q&A・参考リンクまで載せた詳しい本編。</p>
+        <div class="badges"><span class="b b-in">営業用</span><span class="b b-use">お客様OK</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/shisui/detail.html" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/shisui/detail.html</div>
+      </div>
+
+      <div class="card" style="--c:var(--teal)">
+        <div class="h"><span class="emo">📗</span><h3>スマホ用ダイジェスト</h3></div>
+        <p class="desc">要点だけをコンパクトにまとめた最初期版。営業クイックガイド。</p>
+        <div class="badges"><span class="b b-cust">共有用</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/shisui/" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/shisui/</div>
+      </div>
+
+      <div class="card" style="--c:var(--orange)">
+        <div class="h"><span class="emo">🔥</span><h3>爆速マスター（社内研修）</h3></div>
+        <p class="desc">営業マン向け「3分で読める社内研修」。極彩色で楽しく止水板が語れるようになる入門書。</p>
+        <div class="badges"><span class="b b-in">研修用</span><span class="b b-sec">🔒社外秘</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/shisui/study.html" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/shisui/study.html</div>
+      </div>
+
+      <div class="card" style="--c:var(--warn)">
+        <div class="h"><span class="emo">📄</span><h3>止水板 補助金資料（PDF）</h3></div>
+        <p class="desc">法人向けPR資料。自治体・国の防災補助制度の説明。キャッチー版のQ&A内からも開けます。</p>
+        <div class="badges"><span class="b b-pdf">PDF</span><span class="b b-use">お客様OK</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/shisui/hojokin_shiryo.pdf" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/shisui/hojokin_shiryo.pdf</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 入場管理システム ===== -->
+  <section class="cat" style="--c:var(--purple)">
+    <div class="cat-h" style="--c:var(--purple)"><span class="ic">🚧</span>入場管理システム<span class="sub">水門プラント部 ／ 営業マン向け</span></div>
+    <div class="cards">
+
+      <div class="card" style="--c:var(--purple)">
+        <div class="h"><span class="emo">🚧</span><h3>入場登録 爆速マスター</h3></div>
+        <p class="desc">グリーンサイト・ビルディー・キャリアアップシステムの違いが分かる「3分で読める社内研修」。営業マンも登録対象な理由まで。</p>
+        <div class="badges"><span class="b b-in">研修用</span><span class="b b-sec">🔒社外秘</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/nyujo/" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/nyujo/</div>
+      </div>
+
+      <div class="card" style="--c:var(--navy)">
+        <div class="h"><span class="emo">📘</span><h3>解説資料（詳細版）</h3></div>
+        <p class="desc">超初心者向けの完全版。費用の内訳・登録手順・当社の導入体制・キャリアアップシステムとの違いまで網羅。</p>
+        <div class="badges"><span class="b b-in">社内向け</span><span class="b b-sec">🔒社外秘</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/nyujo/detail.html" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/nyujo/detail.html</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== めっき ===== -->
+  <section class="cat" style="--c:var(--orange)">
+    <div class="cat-h" style="--c:var(--orange)"><span class="ic">🛡️</span>めっき勉強会<span class="sub">溶融亜鉛めっき 社内研修</span></div>
+    <div class="cards">
+
+      <div class="card" style="--c:var(--orange)">
+        <div class="h"><span class="emo">🔥</span><h3>めっき爆速マスター</h3></div>
+        <p class="desc">「3分でデキる営業に爆変身」。合金反応・電気めっきとの違い・SGめっき・松竹梅の営業裏ワザまで。</p>
+        <div class="badges"><span class="b b-in">研修用</span><span class="b b-sec">🔒社外秘</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/mekki/" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/mekki/</div>
+      </div>
+
+      <div class="card" style="--c:var(--purple)">
+        <div class="h"><span class="emo">🧯</span><h3>めっき爆速マスター（クレーム解決塾）</h3></div>
+        <p class="desc">「めっきでよくあるクレームとその対応」。白さび・やけ・かすびき・酸しみ・ひずみ、現場写真つきワースト5。</p>
+        <div class="badges"><span class="b b-in">研修用</span><span class="b b-sec">🔒社外秘</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/mekki/vol2.html" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/mekki/vol2.html</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== NJSS ===== -->
+  <section class="cat" style="--c:var(--green)">
+    <div class="cat-h" style="--c:var(--green)"><span class="ic">🔎</span>その他ツール紹介<span class="sub">営業支援</span></div>
+    <div class="cards">
+
+      <div class="card" style="--c:var(--green)">
+        <div class="h"><span class="emo">🔎</span><h3>NJSS 新機能のご紹介</h3></div>
+        <p class="desc">入札情報サービス NJSS の新機能「資料内全文検索」を分かりやすく紹介したページ。</p>
+        <div class="badges"><span class="b b-in">社内向け</span></div>
+        <a class="open" href="https://mie-jukogyo.github.io/njss-zenbun/" target="_blank" rel="noopener">開く ↗</a>
+        <div class="url">mie-jukogyo.github.io/njss-zenbun/</div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    三重重工業株式会社 ／ 社内Web資料ポータル<br>
+    公開先：GitHub Pages（組織 mie-jukogyo）／ 最終更新 2026年7月8日
+  </footer>
+
+</div>
+</div>
+
+<script>
+(function(){
+  var PW = "Miegure";
+  var KEY = "mje_portal_unlocked";
+  var gate = document.getElementById("gate");
+  var main = document.getElementById("main-content");
+
+  function unlock(){
+    gate.style.display = "none";
+    main.style.display = "block";
+  }
+
+  if (localStorage.getItem(KEY) === "1") {
+    unlock();
+  }
+
+  window.checkGatePw = function(){
+    var v = document.getElementById("gate-pw").value;
+    if (v === PW) {
+      localStorage.setItem(KEY, "1");
+      unlock();
+    } else {
+      document.getElementById("gate-err").style.display = "block";
+    }
+  };
+
+  document.getElementById("gate-pw").addEventListener("keydown", function(e){
+    if (e.key === "Enter") checkGatePw();
+  });
+})();
+</script>
+</body>
+</html>
